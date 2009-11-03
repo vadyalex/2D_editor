@@ -27,6 +27,8 @@ public class MainMenu extends JMenuBar implements ActionListener {
 
     private static final String MENU_HELP = "HELP";
     private static final String MENU_ITEM_ABOUT = "ABOUT";
+    private static final String ABOUT_CAPTION = "ABOUT_CAPTION";
+    private static final String ABOUT_MESSAGE = "ABOUT_MESSAGE";
 
 
     public MainMenu() {
@@ -98,6 +100,20 @@ public class MainMenu extends JMenuBar implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent actionEvent) {
-        logger.info("EVENT FROM: " + ((JMenuItem) actionEvent.getSource()).getName());
+        String event = ((JMenuItem) actionEvent.getSource()).getName();
+
+        logger.info("EVENT: " + event);
+
+        if (event == MENU_ITEM_EXIT) {
+            System.exit(0);
+        }
+
+        if (event == MENU_ITEM_ABOUT) {
+            JOptionPane.showMessageDialog(null,
+                    PropertiesHolder.instance.getLabels().getString(ABOUT_MESSAGE),
+                    PropertiesHolder.instance.getLabels().getString(ABOUT_CAPTION),
+                    JOptionPane.INFORMATION_MESSAGE);
+
+        }
     }
 }
