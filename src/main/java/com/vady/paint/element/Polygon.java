@@ -1,5 +1,7 @@
 package com.vady.paint.element;
 
+import com.vady.editor.PropertiesHolder;
+import com.vady.editor.gui.Property;
 import com.vady.paint.Scene;
 import com.vady.util.JoglUtils;
 
@@ -28,9 +30,11 @@ public class Polygon extends Figure {
     public void drawScatch(GL gl, GLU glu) {
         computeVertecies(gl, glu);
 
-        gl.glLineWidth(5.0f);           // TODO move to properties
+        gl.glLineWidth(PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_WIDTH));
 
-        gl.glColor3f(0.0f, 0.0f, 0.0f); // TODO move to properties
+        gl.glColor3f(PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_R),
+                PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_G),
+                PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_B));
 
         gl.glBegin(GL.GL_LINES);
         for (Vertex vertex : vertices) {

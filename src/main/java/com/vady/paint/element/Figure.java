@@ -1,5 +1,7 @@
 package com.vady.paint.element;
 
+import com.vady.editor.PropertiesHolder;
+import com.vady.editor.gui.Property;
 import com.vady.util.ColorUtils;
 import com.vady.util.Utils;
 
@@ -15,9 +17,8 @@ public abstract class Figure implements Displayable {
     protected int id;
 
     protected boolean selected;
+
     protected boolean drawing;
-
-
     protected List<Vertex> vertices;
 
 
@@ -66,9 +67,11 @@ public abstract class Figure implements Displayable {
     }
 
     protected void drawSelectionBox(GL gl) {
-        gl.glLineWidth(5.0f);           // TODO move to properties
+        gl.glLineWidth(PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_WIDTH));
 
-        gl.glColor3f(0.0f, 0.0f, 0.0f); // TODO move to properties
+        gl.glColor3f(PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_COLOR_R),
+                PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_COLOR_G),
+                PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_COLOR_B));
 
         gl.glEnable(GL.GL_LINE_STIPPLE);
 
@@ -86,9 +89,11 @@ public abstract class Figure implements Displayable {
     public void drawScatch(GL gl, GLU glu) {
         computeVertecies(gl, glu);
 
-        gl.glLineWidth(5.0f);           // TODO move to properties
+        gl.glLineWidth(PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_WIDTH));
 
-        gl.glColor3f(0.0f, 0.0f, 0.0f); // TODO move to properties
+        gl.glColor3f(PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_R),
+                PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_G),
+                PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_B));
 
         gl.glBegin(GL.GL_LINE_LOOP);
         for (Vertex vertex : vertices) {
