@@ -1,4 +1,4 @@
-import com.vady.editor.gui.MainWindow;
+import com.vady.editor.gui.control.MainWindow;
 import org.junit.Test;
 
 

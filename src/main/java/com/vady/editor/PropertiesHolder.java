@@ -14,12 +14,14 @@ public class PropertiesHolder {
 
 
     private Configuration labelConfiguration;
+    private Configuration programConfiguration;
 
 
     private PropertiesHolder() {
 
         try {
             labelConfiguration = new PropertiesConfiguration("label.properties");
+            programConfiguration = new PropertiesConfiguration("program.properties");
         } catch (ConfigurationException e) {
             LOGGER.error(e);
         }
@@ -28,6 +30,10 @@ public class PropertiesHolder {
 
     public Configuration getLabels() {
         return labelConfiguration;
+    }
+
+    public Configuration getProgramConfiguration() {
+        return programConfiguration;
     }
 
 }
