@@ -32,7 +32,8 @@ public class Polygon extends Figure {
 
         gl.glLineWidth(PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_WIDTH));
 
-        gl.glColor3f(PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_R),
+        gl.glColor3f(
+                PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_R),
                 PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_G),
                 PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_B));
 

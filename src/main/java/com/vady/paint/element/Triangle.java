@@ -17,6 +17,9 @@ public class Triangle extends Figure {
 
     private int clicks = 0;
 
+    public Triangle() {
+        super();
+    }
 
     public Triangle(boolean drawingMode) {
         super(drawingMode);

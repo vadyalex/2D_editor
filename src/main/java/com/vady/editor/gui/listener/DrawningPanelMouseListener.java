@@ -46,11 +46,11 @@ public class DrawningPanelMouseListener extends MouseAdapter {
 
     public void mousePressed(MouseEvent mouseEvent) {
 
-        if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // LEFT MOUSE BUTTON PRESSED
-            if (Scene.instance.getState() == SceneState.DRAWING) {
+        //  if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // LEFT MOUSE BUTTON PRESSED
+        //     if (Scene.instance.getState() == SceneState.DRAWING) {
 //                Scene.instance.getDrawMode().startMousePosition(mouseEvent.getPoint(), Scene.instance.getColor());
-            }
-        }
+        //   }
+        //    }
 
 /*
         if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // RIGHT MOUSE BUTTON PRESSED
@@ -66,21 +66,21 @@ public class DrawningPanelMouseListener extends MouseAdapter {
         }
 */
 
-        Scene.instance.getMainWindow().repaint();
+        //   Scene.instance.getMainWindow().repaint();
     }
 
 
     public void mouseReleased(MouseEvent mouseEvent) {
 
-        if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // LEFT MOUSE BUTTON PRESSED
-            //          if (Scene.instance.getState() == SceneState.DRAWING) {
+        //      if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // LEFT MOUSE BUTTON PRESSED
+        //          if (Scene.instance.getState() == SceneState.DRAWING) {
 //                Scene.instance.getDrawMode().endMousePosition(mouseEvent.getPoint());
 
-            //            Scene.instance.getMainWindow().repaint();
+        //            Scene.instance.getMainWindow().repaint();
 
-            //          Scene.instance.startDrawing(null);
-            //    }
-        }
+        //          Scene.instance.startDrawing(null);
+        //    }
+        //  }
 
 /*
         if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // RIGHT MOUSE BUTTON PRESSED
@@ -93,6 +93,6 @@ public class DrawningPanelMouseListener extends MouseAdapter {
         }
 */
 
-        Scene.instance.getMainWindow().repaint();
+        //     Scene.instance.getMainWindow().repaint();
     }
 }

@@ -1,7 +1,7 @@
 package com.vady.util;
 
 
-public class Utils {
+public class IdUtils {
 
     private static int id = 0;
 

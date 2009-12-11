@@ -28,6 +28,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
     private static final String MENU_ITEM_INTERPOLATE = "INTERPOLATE";
     private static final String MENU_ITEM_FLAT_FILL = "FLAT_FILL";
     private static final String MENU_ITEM_ROTATE = "ROTATE";
+    private static final String MENU_ITEM_SCALE = "SCALE";
     private static final String MENU_ITEM_DELETE = "DELETE";
 
     private static final String MENU_HELP = "HELP";
@@ -80,7 +81,7 @@ public class MainMenu extends JMenuBar implements ActionListener {
     private JMenu editMenu() {
         JMenu menu = new JMenu(PropertiesHolder.instance.getLabels().getString(MENU_EDIT));
 
-        constructMenu(menu, new String[]{MENU_ITEM_INTERPOLATE, MENU_ITEM_FLAT_FILL, MENU_ITEM_ROTATE, MENU_ITEM_DELETE});
+        constructMenu(menu, new String[]{MENU_ITEM_INTERPOLATE, MENU_ITEM_FLAT_FILL, MENU_ITEM_ROTATE, MENU_ITEM_SCALE, MENU_ITEM_DELETE});
 
         return menu;
     }
@@ -123,10 +124,6 @@ public class MainMenu extends JMenuBar implements ActionListener {
             System.exit(0);
         }
 
-        if (event == MENU_ITEM_ROTATE) {
-
-        }
-
         if (event == MENU_ITEM_DELETE) {
             Scene.instance.deleteSelectedFigure();
         }
@@ -149,6 +146,24 @@ public class MainMenu extends JMenuBar implements ActionListener {
 
         if (event == MENU_ITEM_INTERPOLATE) {
             Scene.instance.randomInterpolation();
+        }
+
+        if (event == MENU_ITEM_ROTATE) {
+            if (Scene.instance.isSelected()) {
+                InputDialog inputDialog = new InputDialog("Rotate figure..", -360, 360, 1);
+                if (inputDialog.getAnswer()) {
+                    Scene.instance.getSelected().rotate((Double) inputDialog.getValue());
+                }
+            }
+        }
+
+        if (event == MENU_ITEM_SCALE) {
+            if (Scene.instance.isSelected()) {
+                InputDialog inputDialog = new InputDialog("Scale figure..", 0, 100, 0.1);
+                if (inputDialog.getAnswer()) {
+                    Scene.instance.getSelected().scale((Double) inputDialog.getValue());
+                }
+            }
         }
 
         if (event == MENU_ITEM_ABOUT) {

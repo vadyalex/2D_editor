@@ -15,10 +15,10 @@ public class Vertex {
 
 
     public Vertex() {
-
+        setColor(Color.BLACK);
     }
 
-    public Vertex(float x, float y) {
+    public Vertex(double x, double y) {
         setX(x);
         setY(y);
 

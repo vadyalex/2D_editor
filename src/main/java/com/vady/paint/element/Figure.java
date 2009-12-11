@@ -3,7 +3,8 @@ package com.vady.paint.element;
 import com.vady.editor.PropertiesHolder;
 import com.vady.editor.gui.Property;
 import com.vady.util.ColorUtils;
-import com.vady.util.Utils;
+import com.vady.util.IdUtils;
+import com.vady.util.JoglUtils;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
@@ -23,7 +24,7 @@ public abstract class Figure implements Displayable {
 
 
     public Figure() {
-        setId(Utils.generate());
+        setId(IdUtils.generate());
 
         vertices = new ArrayList<Vertex>();
 
@@ -31,7 +32,7 @@ public abstract class Figure implements Displayable {
     }
 
     public Figure(boolean drawingMode) {
-        setId(Utils.generate());
+        setId(IdUtils.generate());
 
         vertices = new ArrayList<Vertex>();
 
@@ -69,7 +70,8 @@ public abstract class Figure implements Displayable {
     protected void drawSelectionBox(GL gl) {
         gl.glLineWidth(PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_WIDTH));
 
-        gl.glColor3f(PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_COLOR_R),
+        gl.glColor3f(
+                PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_COLOR_R),
                 PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_COLOR_G),
                 PropertiesHolder.instance.asFloat(Property.SELECTION_BOX_LINE_COLOR_B));
 
@@ -91,7 +93,8 @@ public abstract class Figure implements Displayable {
 
         gl.glLineWidth(PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_WIDTH));
 
-        gl.glColor3f(PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_R),
+        gl.glColor3f(
+                PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_R),
                 PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_G),
                 PropertiesHolder.instance.asFloat(Property.SCATCH_LINE_COLOR_B));
 
@@ -116,19 +119,26 @@ public abstract class Figure implements Displayable {
         }
     }
 
+    public void randomInterpolate() {
+        for (Vertex vertex : getVertices()) {
+            vertex.setColor(ColorUtils.generateRandomColor());
+        }
+    }
+
+    public void rotate(double angle) {
+        JoglUtils.rotateFigure(angle, this, JoglUtils.figureCenter(this));
+    }
+
+    public void scale(double factor) {
+        JoglUtils.scale(factor, this);
+    }
+
     public boolean isDrawing() {
         return drawing;
     }
 
     public void setDrawing(boolean drawing) {
         this.drawing = drawing;
-    }
-
-    public void interpolate() {
-        for (Vertex vertex : getVertices()) {
-            vertex.setColor(ColorUtils.generateRandomColor());
-        }
-
     }
 
     public boolean isSelected() {
@@ -150,7 +160,6 @@ public abstract class Figure implements Displayable {
     public void setId(int id) {
         this.id = id;
     }
-
 
     public List<Vertex> getVertices() {
         return vertices;

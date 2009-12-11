@@ -1,5 +1,7 @@
 package com.vady.util;
 
+import com.vady.paint.element.Figure;
+import com.vady.paint.element.Vertex;
 import org.apache.log4j.Logger;
 
 import javax.media.opengl.GL;
@@ -13,6 +15,7 @@ public class JoglUtils {
 
 
     public static final Logger logger = Logger.getLogger(JoglUtils.class);
+    public static final double ONE_DEGREE = 0.017453292519943295769236907684886;
 
 
     /**
@@ -48,9 +51,65 @@ public class JoglUtils {
     }
 
 
-    public static double distance(double x1, double y1, double x2, double y2) {
-        return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)); // distance between two points
+    public static double length(double x1, double y1, double x2, double y2) {
+        return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)); // length between two points
     }
 
 
+    public static Vertex figureCenter(Figure figure) {
+        double xc = 0, yc = 0;
+        double P = 0;
+
+        int n = figure.getVertices().size();
+        for (int i = 0; i < n; i++) {
+            Vertex iVertex = figure.getVertices().get(i);
+            Vertex inextVertex = figure.getVertices().get((i + 1) % n);
+
+            double l = length(iVertex.getX(), iVertex.getY(), inextVertex.getX(), inextVertex.getY());
+
+            xc += l * (iVertex.getX() + inextVertex.getX()) / 2;
+            yc += l * (iVertex.getY() + inextVertex.getY()) / 2;
+
+            P += l;
+        }
+
+        return new Vertex(xc /= P, xc /= P);
+    }
+
+    public static void rotateFigure(double angle, Figure figure, Vertex rotationPoint) {
+
+        // move figure to coordinates center
+        for (Vertex vertex : figure.getVertices()) {
+            vertex.setX(vertex.getX() - rotationPoint.getX());
+            vertex.setY(vertex.getY() - rotationPoint.getY());
+        }
+
+        angle = angle * ONE_DEGREE;
+        double sinValue = Math.sin(angle);
+        double cosValue = Math.cos(angle);
+
+        // rotate every vertex
+        for (Vertex vertex : figure.getVertices()) {
+            double x = vertex.getX();
+            double y = vertex.getY();
+
+            vertex.setX(x * cosValue - y * sinValue);
+            vertex.setY(x * sinValue + y * cosValue);
+        }
+
+        // move figure back
+        for (Vertex vertex : figure.getVertices()) {
+            vertex.setX(vertex.getX() + rotationPoint.getX());
+            vertex.setY(vertex.getY() + rotationPoint.getY());
+        }
+
+    }
+
+
+    public static void scale(double factor, Figure figure) {
+        for (Vertex vertex : figure.getVertices()) {
+            vertex.setX(vertex.getX() * factor);
+            vertex.setY(vertex.getY() * factor);
+        }
+    }
 }

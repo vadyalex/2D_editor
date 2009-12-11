@@ -65,8 +65,8 @@ public class Scene {
 
         pickPoint = new Point(0, 0);
 
-//        figures.add(FigureUtils.createInterpolatedTriangle()); // TODO remove it
-        figures.add(FigureUtils.createTriangle(0, 0, 0, 1f, 1f, 0)); // TODO remove it
+        figures.add(FigureUtils.createInterpolatedTriangle()); // TODO remove it
+        //       figures.add(FigureUtils.createTriangle(0, 0, 0, 1f, 1f, 0)); // TODO remove it
         //  figures.add(FigureUtils.createCircle());
     }
 
@@ -221,7 +221,7 @@ public class Scene {
 
     public void randomInterpolation() {
         if (isSelected()) {
-            selected.interpolate();
+            selected.randomInterpolate();
         }
     }
 

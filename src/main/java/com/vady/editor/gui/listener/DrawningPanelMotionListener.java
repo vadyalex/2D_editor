@@ -43,8 +43,8 @@ public class DrawningPanelMotionListener extends MouseMotionAdapter {
             int width = ((JPanel) mouseEvent.getSource()).getWidth();
             int height = ((JPanel) mouseEvent.getSource()).getHeight();
 
-            float difX = Utils.window2OpenGL((int) newPoint.getX(), width) - Utils.window2OpenGL((int) oldPoint.getX(), width);
-            float difY = Utils.window2OpenGL((int) -newPoint.getY(), height) - Utils.window2OpenGL((int) -oldPoint.getY(), height);
+            float difX = IdUtils.window2OpenGL((int) newPoint.getX(), width) - IdUtils.window2OpenGL((int) oldPoint.getX(), width);
+            float difY = IdUtils.window2OpenGL((int) -newPoint.getY(), height) - IdUtils.window2OpenGL((int) -oldPoint.getY(), height);
 
 
             Scene.instance.move(difX, difY);
