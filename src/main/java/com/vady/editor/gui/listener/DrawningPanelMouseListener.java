@@ -51,6 +51,8 @@ public class DrawningPanelMouseListener extends MouseAdapter {
             logger.debug("Right mouse button!!");
 
             if (Scene.instance.isSelected()) {
+                Scene.instance.getMainWindow().getContentPane().setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+
                 Scene.instance.setState(State.MOVING);
                 Scene.instance.getSelected().setState(State.MOVING);
 
@@ -68,9 +70,10 @@ public class DrawningPanelMouseListener extends MouseAdapter {
         if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // RIGHT MOUSE BUTTON PRESSED
 
             if (Scene.instance.getState() == State.MOVING) {
-                //Scene.instance.setEndPoint(mouseEvent.getPoint());
                 Scene.instance.setState(State.SELECTED);
                 Scene.instance.getSelected().select();
+
+                Scene.instance.getMainWindow().getContentPane().setCursor(null);
             }
         }
 
