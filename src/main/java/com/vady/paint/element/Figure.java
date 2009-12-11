@@ -2,6 +2,7 @@ package com.vady.paint.element;
 
 import com.vady.editor.PropertiesHolder;
 import com.vady.editor.gui.Property;
+import com.vady.paint.State;
 import com.vady.util.ColorUtils;
 import com.vady.util.IdUtils;
 import com.vady.util.JoglUtils;
@@ -15,20 +16,23 @@ import java.util.List;
 
 public abstract class Figure implements Displayable {
 
+    private static final double MOVING_SCALE = 1.0;
+
     protected int id;
 
-    protected boolean selected;
+    protected State state;
 
-    protected boolean drawing;
     protected List<Vertex> vertices;
+    protected Point start;
 
+    protected Point end;
 
     public Figure() {
         setId(IdUtils.generate());
 
         vertices = new ArrayList<Vertex>();
 
-        drawing = false;
+        state = State.NOTHING;
     }
 
     public Figure(boolean drawingMode) {
@@ -36,27 +40,22 @@ public abstract class Figure implements Displayable {
 
         vertices = new ArrayList<Vertex>();
 
-        drawing = drawingMode;
-    }
-
-/*
-    public Figure(int id, Vertex... vertecies) {
-        setId(id);
-
-        if (vertecies.length > 0) {
-            this.vertices = Arrays.asList(vertecies);
-        } else {
-            this.vertices = new ArrayList<Vertex>();
+        if (drawingMode) {
+            state = State.DRAWING;
         }
     }
-*/
 
     public void display(GL gl, GLU glu) {
         gl.glPushName(id);
 
-        if (drawing) {
+        if (isDrawing()) {
             drawScatch(gl, glu);
         } else {
+
+            if (state == State.MOVING) {
+                moveFigure(gl, glu);
+            }
+
             drawBody(gl, glu);
 
             if (isSelected()) {
@@ -65,6 +64,22 @@ public abstract class Figure implements Displayable {
         }
 
         gl.glPopName();
+    }
+
+    private void moveFigure(GL gl, GLU glu) {
+        if (start != null && end != null) {
+            double[] start = JoglUtils.window2world(gl, glu, this.start);
+            double[] end = JoglUtils.window2world(gl, glu, this.end);
+
+            double moveX = (end[0] - start[0]) * MOVING_SCALE;
+            double moveY = (end[1] - start[1]) * MOVING_SCALE;
+
+            for (Vertex vertex : vertices) {
+                vertex.setX(vertex.getX() + moveX);
+                vertex.setY(vertex.getY() + moveY);
+            }
+
+        }
     }
 
     protected void drawSelectionBox(GL gl) {
@@ -133,24 +148,36 @@ public abstract class Figure implements Displayable {
         JoglUtils.scale(factor, this);
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
     public boolean isDrawing() {
-        return drawing;
+        return state == State.DRAWING;
     }
 
     public void setDrawing(boolean drawing) {
-        this.drawing = drawing;
+        if (drawing) {
+            setState(State.DRAWING);
+        } else {
+            setState(State.NOTHING);
+        }
     }
 
     public boolean isSelected() {
-        return selected;
+        return state == State.SELECTED;
     }
 
     public void select() {
-        this.selected = true;
+        setState(State.SELECTED);
     }
 
     public void unselect() {
-        this.selected = false;
+        setState(State.NOTHING);
     }
 
     public int getId() {
@@ -167,5 +194,21 @@ public abstract class Figure implements Displayable {
 
     public void setVertices(List<Vertex> vertices) {
         this.vertices = vertices;
+    }
+
+    public Point getStart() {
+        return start;
+    }
+
+    public void setStart(Point start) {
+        this.start = start;
+    }
+
+    public Point getEnd() {
+        return end;
+    }
+
+    public void setEnd(Point end) {
+        this.end = end;
     }
 }

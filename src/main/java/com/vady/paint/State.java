@@ -1,6 +1,6 @@
 package com.vady.paint;
 
 
-public enum SceneState {
+public enum State {
     NOTHING, SELECTED, DRAWING, MOVING
 }

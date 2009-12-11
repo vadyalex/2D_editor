@@ -15,6 +15,7 @@ public class JoglUtils {
 
 
     public static final Logger logger = Logger.getLogger(JoglUtils.class);
+
     public static final double ONE_DEGREE = 0.017453292519943295769236907684886;
 
 
@@ -73,7 +74,7 @@ public class JoglUtils {
             P += l;
         }
 
-        return new Vertex(xc /= P, xc /= P);
+        return new Vertex(xc /= P, yc /= P);
     }
 
     public static void rotateFigure(double angle, Figure figure, Vertex rotationPoint) {

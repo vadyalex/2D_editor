@@ -10,9 +10,7 @@ import java.awt.*;
 
 public class Circle extends Figure {
 
-
-    protected Point start;
-    protected Point end;
+    private static final int DRAWING_CLICKS_MAX = 2;
 
     private int clicks = 0;
 
@@ -41,7 +39,7 @@ public class Circle extends Figure {
     public void addVertex(Point point, Color color) {
         clicks++;
 
-        if (clicks < 2) {
+        if (clicks < DRAWING_CLICKS_MAX) {
             this.start = point;
             this.end = point;
             this.color = color;

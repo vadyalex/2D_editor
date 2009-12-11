@@ -11,8 +11,7 @@ import java.awt.*;
 public class Rectangle extends Figure {
 
 
-    protected Point start;
-    protected Point end;
+    private static final int DRAWING_CLICKS_MAX = 2;
 
     private int clicks = 0;
 
@@ -43,7 +42,7 @@ public class Rectangle extends Figure {
         }
 
 
-        if (clicks < 2) {
+        if (clicks < DRAWING_CLICKS_MAX) {
             this.start = point;
             this.end = point;
         } else {
@@ -65,7 +64,7 @@ public class Rectangle extends Figure {
 
             getVertices().get(1).setCoordinate((float) end[0], (float) start[1]);
 
-            getVertices().get(2).setCoordinate((float) end[0], (float) end[1]);
+            getVertices().get(DRAWING_CLICKS_MAX).setCoordinate((float) end[0], (float) end[1]);
 
             getVertices().get(3).setCoordinate((float) start[0], (float) end[1]);
         }

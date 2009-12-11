@@ -3,6 +3,7 @@ package com.vady.editor.gui.control;
 import com.vady.editor.PropertiesHolder;
 import com.vady.editor.gui.GuiFactory;
 import com.vady.editor.gui.Property;
+import com.vady.editor.gui.listener.KeyboardListener;
 import com.vady.paint.Scene;
 import org.apache.log4j.Logger;
 
@@ -32,6 +33,8 @@ public class MainWindow extends JFrame {
         int width = PropertiesHolder.instance.getProgramConfiguration().getInt(Property.MAIN_WINDOW_WIDTH.toString());
         int height = PropertiesHolder.instance.getProgramConfiguration().getInt(Property.MAIN_WINDOW_HEIGHT.toString());
         this.setSize(width, height);
+
+        this.addKeyListener(new KeyboardListener());
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null); // center

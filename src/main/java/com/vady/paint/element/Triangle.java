@@ -10,10 +10,7 @@ import java.awt.*;
 
 public class Triangle extends Figure {
 
-    private static final int VERTEX_MAX = 3;
-
-    private Point start;
-    private Point end;
+    private static final int DRAWING_CLICKS_MAX = 3;
 
     private int clicks = 0;
 
@@ -52,7 +49,7 @@ public class Triangle extends Figure {
     public void addVertex(Point point, Color color) {
         clicks++;
 
-        if (clicks < VERTEX_MAX) {
+        if (clicks < DRAWING_CLICKS_MAX) {
             this.start = end;
             this.end = point;
 

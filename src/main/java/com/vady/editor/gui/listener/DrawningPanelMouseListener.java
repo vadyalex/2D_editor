@@ -1,7 +1,7 @@
 package com.vady.editor.gui.listener;
 
 import com.vady.paint.Scene;
-import com.vady.paint.SceneState;
+import com.vady.paint.State;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -19,15 +19,15 @@ public class DrawningPanelMouseListener extends MouseAdapter {
         if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // LEFT MOUSE BUTTON CLICKED
             logger.info("Left mouse button clicked.");
 
-            if (Scene.instance.getState() == SceneState.NOTHING || Scene.instance.isSelected()) {
+            if (Scene.instance.getState() == State.NOTHING || Scene.instance.isSelected()) {
                 Point point = mouseEvent.getPoint();
 
-                Scene.instance.setPickPoint(point);
+                Scene.instance.setCursor(point);
 
                 logger.info("[" + point.getX() + ";" + point.getY() + "]");
             }
 
-            if (Scene.instance.getState() == SceneState.DRAWING) {
+            if (Scene.instance.getState() == State.DRAWING) {
                 Scene.instance.getSelected().addVertex(mouseEvent.getPoint(), Scene.instance.getColor());
             }
         }
@@ -35,7 +35,7 @@ public class DrawningPanelMouseListener extends MouseAdapter {
         if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // RIGHT MOUSE BUTTON CLICKED
             logger.info("Right mouse button clicked.");
 
-            if (Scene.instance.getState() == SceneState.DRAWING) { // When drawing polygon - last vertex position
+            if (Scene.instance.getState() == State.DRAWING) { // When drawing polygon - last vertex position
                 ((com.vady.paint.element.Polygon) (Scene.instance.getSelected())).close(mouseEvent.getPoint(), Scene.instance.getColor());
             }
         }
@@ -46,53 +46,34 @@ public class DrawningPanelMouseListener extends MouseAdapter {
 
     public void mousePressed(MouseEvent mouseEvent) {
 
-        //  if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // LEFT MOUSE BUTTON PRESSED
-        //     if (Scene.instance.getState() == SceneState.DRAWING) {
-//                Scene.instance.getDrawMode().startMousePosition(mouseEvent.getPoint(), Scene.instance.getColor());
-        //   }
-        //    }
-
-/*
         if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // RIGHT MOUSE BUTTON PRESSED
 
             logger.debug("Right mouse button!!");
 
             if (Scene.instance.isSelected()) {
-                Scene.instance.setState(SceneState.MOVING);
+                Scene.instance.setState(State.MOVING);
+                Scene.instance.getSelected().setState(State.MOVING);
 
-                Scene.instance.setPickPoint(mouseEvent.getPoint());
-                //Scene.instance.setEndPoint(mouseEvent.getPoint());
+                Scene.instance.getSelected().setStart(mouseEvent.getPoint());
+                Scene.instance.getSelected().setEnd(mouseEvent.getPoint());
             }
         }
-*/
 
-        //   Scene.instance.getMainWindow().repaint();
+        Scene.instance.getMainWindow().repaint();
     }
 
 
     public void mouseReleased(MouseEvent mouseEvent) {
 
-        //      if (mouseEvent.getButton() == MouseEvent.BUTTON1) { // LEFT MOUSE BUTTON PRESSED
-        //          if (Scene.instance.getState() == SceneState.DRAWING) {
-//                Scene.instance.getDrawMode().endMousePosition(mouseEvent.getPoint());
-
-        //            Scene.instance.getMainWindow().repaint();
-
-        //          Scene.instance.startDrawing(null);
-        //    }
-        //  }
-
-/*
         if (mouseEvent.getButton() == MouseEvent.BUTTON3) { // RIGHT MOUSE BUTTON PRESSED
-            Scene.instance.setEndPoint(mouseEvent.getPoint());
 
-            Scene.instance.getMainWindow().repaint();
-
-            Scene.instance.setState(SceneState.SELECTED);
-            Scene.instance.setEndPoint(null);
+            if (Scene.instance.getState() == State.MOVING) {
+                //Scene.instance.setEndPoint(mouseEvent.getPoint());
+                Scene.instance.setState(State.SELECTED);
+                Scene.instance.getSelected().select();
+            }
         }
-*/
 
-        //     Scene.instance.getMainWindow().repaint();
+        Scene.instance.getMainWindow().repaint();
     }
 }

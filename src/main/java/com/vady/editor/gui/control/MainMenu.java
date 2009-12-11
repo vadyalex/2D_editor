@@ -1,7 +1,6 @@
 package com.vady.editor.gui.control;
 
 import com.vady.editor.PropertiesHolder;
-import com.vady.editor.gui.listener.KeyboardListener;
 import com.vady.paint.Scene;
 import org.apache.log4j.Logger;
 
@@ -56,8 +55,6 @@ public class MainMenu extends JMenuBar implements ActionListener {
         this.add(zoomMenu());
         this.add(editMenu());
         this.add(helpMenu());
-
-        this.addKeyListener(new KeyboardListener());
 
         this.setVisible(true);
     }

@@ -30,7 +30,7 @@ public class ColorMouseListener extends MouseAdapter {
 
                 logger.info("Current color: " + color);
 
-                Scene.instance.changeColor(color);
+                Scene.instance.setColor(color);
             }
 
         }

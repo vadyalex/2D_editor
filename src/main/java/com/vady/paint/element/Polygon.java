@@ -13,9 +13,6 @@ import java.awt.*;
 public class Polygon extends Figure {
 
 
-    private Point start;
-    private Point end;
-
     private boolean closed = false;
 
 

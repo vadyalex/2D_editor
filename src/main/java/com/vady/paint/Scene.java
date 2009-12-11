@@ -2,9 +2,6 @@ package com.vady.paint;
 
 import com.sun.opengl.util.BufferUtil;
 import com.vady.paint.element.Figure;
-import com.vady.paint.element.Vertex;
-import com.vady.util.FigureUtils;
-import com.vady.util.JoglUtils;
 import org.apache.log4j.Logger;
 
 import javax.media.opengl.GL;
@@ -26,19 +23,18 @@ public class Scene {
 
 
     private final int BUFSIZE = 512;
-    private final float ZOOM_SCALE = 0.01f;
+    private final double ZOOM_SCALE = 0.01;
 
     private GLU glu;
 
-    private Point pickPoint;
-    private Point endPoint;
+    private Point cursor;
 
-    private SceneState state;
+    private State state;
 
     private Figure selected;
     private List<Figure> figures;
 
-    private float zoom;
+    private double zoom;
 
     private Color color;
 
@@ -52,20 +48,20 @@ public class Scene {
     }
 
     private void init() {
-        setPickPoint(null);
-        state = SceneState.NOTHING;
+        setCursor(null);
+        state = State.NOTHING;
 
         selected = null;
 
         figures = new LinkedList<Figure>();
 
-        zoom = 1.0f;
+        zoom = 1.0;
 
         color = Color.BLACK;
 
-        pickPoint = new Point(0, 0);
+        cursor = new Point(0, 0);
 
-        figures.add(FigureUtils.createInterpolatedTriangle()); // TODO remove it
+        //figures.add(FigureUtils.createInterpolatedTriangle()); // TODO remove it
         //       figures.add(FigureUtils.createTriangle(0, 0, 0, 1f, 1f, 0)); // TODO remove it
         //  figures.add(FigureUtils.createCircle());
     }
@@ -75,7 +71,7 @@ public class Scene {
 
         selected = drawingFigure;
 
-        state = SceneState.DRAWING;
+        state = State.DRAWING;
     }
 
     public void endDrawing() {
@@ -95,19 +91,15 @@ public class Scene {
 
         gl.glPushMatrix();
 
-        gl.glScalef(zoom, zoom, 1.0f);
+        gl.glScaled(zoom, zoom, 1.0);
 
-        if (isSelected() || state == SceneState.NOTHING) {
+        if ((isSelected() || state == State.NOTHING) && cursor != null) {
             pickFigure(gl);
         }
 
         drawFigures(gl, glu);
 
-        if (state == SceneState.MOVING && endPoint != null) {
-            moveSelectedFigureTo(gl, glu);
-        }
-
-        if (state == SceneState.DRAWING) {
+        if (state == State.DRAWING) {
             selected.display(gl, glu);
         }
 
@@ -149,7 +141,7 @@ public class Scene {
         gl.glPushMatrix();
         gl.glLoadIdentity();
 
-        glu.gluPickMatrix((double) pickPoint.x, (double) (viewport[3] - pickPoint.y), 1.0, 1.0, viewport, 0);
+        glu.gluPickMatrix((double) cursor.x, (double) (viewport[3] - cursor.y), 1.0, 1.0, viewport, 0);
 
         drawFigures(gl, glu);
 
@@ -181,12 +173,13 @@ public class Scene {
             unselect();
         }
 
+        cursor = null;
     }
 
     public void select(Figure foundedFigure) {
         selected = foundedFigure;
         selected.select();
-        state = SceneState.SELECTED;
+        state = State.SELECTED;
     }
 
     public void unselect() {
@@ -194,7 +187,7 @@ public class Scene {
             selected.unselect();
         }
         selected = null;
-        state = SceneState.NOTHING;
+        state = State.NOTHING;
     }
 
     public void zoom(int level) {
@@ -209,7 +202,7 @@ public class Scene {
         if (isSelected()) {
             figures.remove(selected);
             unselect();
-            state = SceneState.NOTHING;
+            state = State.NOTHING;
         }
     }
 
@@ -225,19 +218,19 @@ public class Scene {
         }
     }
 
-    public Point getPickPoint() {
-        return pickPoint;
+    public Point getCursor() {
+        return cursor;
     }
 
-    public void setPickPoint(Point pickPoint) {
-        this.pickPoint = pickPoint;
+    public void setCursor(Point cursor) {
+        this.cursor = cursor;
     }
 
     public Color getColor() {
         return color;
     }
 
-    public void changeColor(Color color) {
+    public void setColor(Color color) {
         this.color = color;
 
         fill(); // If some figure selected - refill it with new color
@@ -251,7 +244,7 @@ public class Scene {
         this.mainWindow = mainWindow;
     }
 
-    public SceneState getState() {
+    public State getState() {
         return state;
     }
 
@@ -260,35 +253,11 @@ public class Scene {
     }
 
     public boolean isSelected() {
-        return state == SceneState.SELECTED;
+        return state == State.SELECTED;
     }
 
-    public void setState(SceneState state) {
+    public void setState(State state) {
         this.state = state;
     }
-
-    public void move(float difX, float difY) {
-        for (Vertex vertex : selected.getVertices()) {
-            vertex.setX(vertex.getX() + difX);
-            vertex.setY(vertex.getY() + difY);
-        }
-
-    }
-
-    public void setEndPoint(Point point) {
-        this.endPoint = point;
-    }
-
-    private void moveSelectedFigureTo(GL gl, GLU glu) {
-        double[] oldPoint = JoglUtils.window2world(gl, glu, pickPoint);
-        double[] newPoint = JoglUtils.window2world(gl, glu, endPoint);
-
-        for (Vertex vertex : selected.getVertices()) {
-            vertex.setX(vertex.getX() + (newPoint[0] - oldPoint[0]));
-            vertex.setY(vertex.getY() + (newPoint[1] - oldPoint[1]));
-        }
-
-    }
-
 
 }

@@ -10,9 +10,6 @@ import java.awt.*;
 
 public class Line extends Figure {
 
-    protected Point start;
-    protected Point end;
-
     private int clicks = 0;
 
     public Line(boolean drawingMode) {
